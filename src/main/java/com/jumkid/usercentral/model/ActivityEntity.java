@@ -13,7 +13,7 @@ import lombok.*;
 public class ActivityEntity {
 
     @Id
-    @Column(name = "activity_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -23,7 +23,7 @@ public class ActivityEntity {
     @Column(name = "entity_id")
     private String entityId;
 
-    @Column(name = "module")
+    @Column(name = "entity_module")
     private String entityModule;
 
     @Column(name = "title")
@@ -31,5 +31,8 @@ public class ActivityEntity {
 
     @Column(name = "unread")
     private boolean unread;
+
+    @Column(name = "payload")
+    private String payload;
 
 }

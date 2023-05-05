@@ -1,19 +1,21 @@
 package com.jumkid.usercentral.service;
 
-import com.jumkid.usercentral.repository.ActivityRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.jumkid.usercentral.controller.dto.Activity;
+import com.jumkid.usercentral.exception.DataNotFoundException;
+import com.jumkid.usercentral.model.ActivityEntity;
 
-@Service
-@Slf4j
-public class UserService {
+import java.util.List;
 
-    private final ActivityRepository activityRepository;
+public interface UserService {
 
-    @Autowired
-    public UserService(ActivityRepository activityRepository) {
-        this.activityRepository = activityRepository;
-    }
+    Activity getUserActivity(int id)  throws DataNotFoundException;
+
+    List<Activity> getActivities();
+
+    Activity save(ActivityEntity entity);
+
+    List<ActivityEntity> saveAll(List<ActivityEntity> activityEntities);
+
+    Integer setActivityUnread(Long id, boolean unread);
 
 }

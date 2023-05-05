@@ -6,4 +6,8 @@ public class DataNotFoundException extends RuntimeException {
         super(String.format("The entity %s with the value '%s' could not be found.", entity, value));
     }
 
+    public DataNotFoundException(String entityId) {
+        super(String.format("The entity with id '%s' could not be found.", entityId));
+    }
+
 }
