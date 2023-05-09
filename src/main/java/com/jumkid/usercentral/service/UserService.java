@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface UserService {
 
-    Activity getUserActivity(int id)  throws DataNotFoundException;
+    Activity getUserActivity(Long id)  throws DataNotFoundException;
 
     List<Activity> getActivities();
 

@@ -18,6 +18,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -53,6 +54,32 @@ public class UserCentralAPITests {
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$", hasSize(2)));
+	}
+
+	@Test
+	@WithMockUser(username="test", password="test", authorities="USER_ROLE")
+	public void whenGivenId_shouldGetActivityByUser() throws Exception {
+		mockMvc.perform(get("/user/activities/1")
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.id").value(1));
+	}
+
+	@Test
+	@WithMockUser(username="guest", password="guest", authorities="GUEST_ROLE")
+	public void whenNotOwnerGetActivity_shouldGet403Forbidden() throws Exception {
+		mockMvc.perform(get("/user/activities/1")
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isForbidden());
+	}
+
+	@Test
+	@WithMockUser(username="test", password="test", authorities="USER_ROLE")
+	public void whenGivenId_ShouldUpdateUnreadFlag() throws Exception {
+		mockMvc.perform(put("/user/activities/1/unread")
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isAccepted())
+				.andExpect(jsonPath("$.success").value(true));
 	}
 
 }

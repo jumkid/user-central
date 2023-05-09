@@ -1,5 +1,6 @@
 package com.jumkid.usercentral.controller;
 
+import com.jumkid.share.controller.response.CommonResponse;
 import com.jumkid.usercentral.controller.dto.Activity;
 import com.jumkid.usercentral.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,25 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('USER_ROLE', 'ADMIN_ROLE')")
     public List<Activity> getUserActivities() {
         return userService.getActivities();
+    }
+
+    @GetMapping("/activities/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyAuthority('USER_ROLE', 'ADMIN_ROLE')")
+    public Activity getUserActivity(@PathVariable Long id) {
+        return userService.getUserActivity(id);
+    }
+
+    @PutMapping("/activities/{id}/unread")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PreAuthorize("hasAnyAuthority('USER_ROLE', 'ADMIN_ROLE')")
+    public CommonResponse setActivityUnread(@PathVariable Long id) {
+        Integer updated = userService.setActivityUnread(id, false);
+        boolean isUpdated = updated == 1;
+        return CommonResponse.builder()
+                .success(isUpdated)
+                .msg(isUpdated ? "" : "Failed to update unread flag")
+                .build();
     }
 
 }

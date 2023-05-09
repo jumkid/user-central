@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.jumid</groupId>
-    <artifactId>usercentral</artifactId>
+    <artifactId>user-central</artifactId>
     <version>0.9.1</version>
-    <name>usercentral</name>
+    <name>user-central</name>
     <description>Customer user service</description>
 
     <properties>

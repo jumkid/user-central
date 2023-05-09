@@ -7,6 +7,7 @@ import com.jumkid.usercentral.exception.DataNotFoundException;
 import com.jumkid.usercentral.model.ActivityEntity;
 import com.jumkid.usercentral.model.mapper.ActivityMapper;
 import com.jumkid.usercentral.repository.ActivityRepository;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,10 +34,9 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Activity getUserActivity(int id) throws DataNotFoundException{
-        String idStr = String.valueOf(id);
-        ActivityEntity entity = activityRepository.findById(String.valueOf(idStr))
-                .orElseThrow(() -> new DataNotFoundException(idStr));
+    public Activity getUserActivity(Long id) throws DataNotFoundException{
+        ActivityEntity entity = activityRepository.findByIdAndUserId(id, getCurrentUserId())
+                .orElseThrow(() -> new DataNotFoundException(String.valueOf(id)));
         return activityMapper.entityToDTO(entity);
     }
 
@@ -60,9 +60,10 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    @Transactional
     public Integer setActivityUnread(Long id, boolean unread) {
         try {
-            return activityRepository.setUnreadForUserActivity(unread, id, getCurrentUserId());
+            return activityRepository.updateUnread(unread, id, getCurrentUserId());
         } catch (Exception e) {
             return 0;
         }
