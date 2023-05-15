@@ -1,6 +1,7 @@
 package com.jumkid.usercentral.repository;
 
 import com.jumkid.usercentral.model.ActivityEntity;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -23,4 +24,6 @@ public interface ActivityRepository extends JpaRepository<ActivityEntity, String
                          @Param(value = "id") Long id,
                          @Param(value = "userId") String userId);
 
+    @Transactional
+    Integer deleteByUserIdAndEntityIdAndEntityModule(String userId, String entityId, String entityModule);
 }

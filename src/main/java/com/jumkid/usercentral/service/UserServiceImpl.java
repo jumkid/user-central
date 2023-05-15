@@ -69,6 +69,36 @@ public class UserServiceImpl implements UserService{
         }
     }
 
+    @Override
+    public Integer deleteUserActivity(Long id) {
+        try {
+            activityRepository.deleteById(String.valueOf(id));
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.trace("Failed to delete user activity with id {}", id);
+            return 0;
+        }
+    }
+
+    @Override
+    public Integer deleteAll(List<ActivityEntity> activityEntities) {
+        int count = 0;
+        try {
+            for (ActivityEntity activityEntity : activityEntities) {
+                String userId = activityEntity.getUserId();
+                String entityId = activityEntity.getEntityId();
+                String entityModule = activityEntity.getEntityModule();
+                count += activityRepository.deleteByUserIdAndEntityIdAndEntityModule(userId, entityId, entityModule);
+                log.trace("Deleted {} activity with userId:{}, entityId:{} entityModule:{}",
+                        count, userId, entityId, entityModule);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
     private String getCurrentUserId() {
         UserProfile userProfile = userProfileManager.fetchUserProfile();
         return userProfile.getId();

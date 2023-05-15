@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Builder
 @Data
-@EqualsAndHashCode(of = {"id", "userId", "entityId"}, callSuper = false)
+@EqualsAndHashCode(of = {"id"})
 public class Activity{
 
     @Min(0L)

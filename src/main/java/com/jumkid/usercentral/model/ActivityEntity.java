@@ -10,6 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EqualsAndHashCode(of = {"userId", "entityId", "entityModule"})
 public class ActivityEntity {
 
     @Id
