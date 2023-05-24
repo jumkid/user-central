@@ -21,7 +21,7 @@ public class ExceptionAdviceController {
     public CustomErrorResponse handleDuplicateValueException(DuplicateValueException ex) {
         return CustomErrorResponse.builder()
                 .timestamp(Calendar.getInstance().getTime())
-                .message("Duplicate data value found.")
+                .message(ex.getMessage())
                 .build();
     }
 
@@ -30,7 +30,7 @@ public class ExceptionAdviceController {
     public CustomErrorResponse handleDataNotFoundException(DataNotFoundException ex) {
         return CustomErrorResponse.builder()
                 .timestamp(Calendar.getInstance().getTime())
-                .message("Data value is not found.")
+                .message(ex.getMessage())
                 .build();
     }
 

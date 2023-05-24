@@ -1,6 +1,6 @@
 package com.jumkid.usercentral.event;
 
-import com.jumkid.usercentral.model.ActivityEntity;
+import com.jumkid.usercentral.model.ActivityNotificationEntity;
 import com.jumkid.usercentral.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -27,7 +27,7 @@ public class ActivityNotifyConsumer {
             containerFactory = "kafkaListenerContainerFactory")
     public void listen(@Payload String message) {
         log.debug("kafka message received: {}", message);
-        List<ActivityEntity> activityEntities = eventHelper.buildActivitiesForRelatedUsers(message);
+        List<ActivityNotificationEntity> activityEntities = eventHelper.buildActivitiesForRelatedUsers(message);
         if (!activityEntities.isEmpty()) {
             userService.saveAll(activityEntities);
         }

@@ -1,20 +1,20 @@
 package com.jumkid.usercentral;
 
-import com.jumkid.usercentral.model.ActivityEntity;
+import com.jumkid.usercentral.model.ActivityNotificationEntity;
 
 import java.util.List;
 
 public class APITestsSetup {
 
-    static List<ActivityEntity> buildActivityEntities() {
-        return List.of(buildActivityEntity(1L), buildActivityEntity(2L));
+    static List<ActivityNotificationEntity> buildActivityNotificationEntities() {
+        return List.of(buildActivityNotificationEntity(1L), buildActivityNotificationEntity(2L));
     }
 
-    static ActivityEntity buildActivityEntity(Long id) {
-        return ActivityEntity.builder()
+    static ActivityNotificationEntity buildActivityNotificationEntity(Long id) {
+        return ActivityNotificationEntity.builder()
                 .id(id)
                 .userId("test")
-                .title("test user activity")
+                .title("test user activity notification")
                 .entityModule("test")
                 .entityId("1234-abed-"+id)
                 .unread(true)

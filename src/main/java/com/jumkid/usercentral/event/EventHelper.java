@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.jumkid.share.event.ActivityEvent;
-import com.jumkid.usercentral.model.ActivityEntity;
+import com.jumkid.usercentral.model.ActivityNotificationEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -22,8 +22,8 @@ public class EventHelper {
         this.objectMapper = new ObjectMapper();
     }
 
-    public List<ActivityEntity> buildActivitiesForRelatedUsers(String message) {
-        final List<ActivityEntity> activityEntities = new ArrayList<>();
+    public List<ActivityNotificationEntity> buildActivitiesForRelatedUsers(String message) {
+        final List<ActivityNotificationEntity> activityEntities = new ArrayList<>();
 
         try {
             final ActivityEvent activityEvent = objectMapper.readValue(message, ActivityEvent.class);
@@ -35,7 +35,7 @@ public class EventHelper {
 
             String creatorId = node.get(ActivityFields.CREATED_BY.value()).asText();
             if (creatorId != null) {
-                ActivityEntity creatorActivity = buildActivityEntity(creatorId, title, activityId, payload);
+                ActivityNotificationEntity creatorActivity = buildActivityEntity(creatorId, title, activityId, payload);
                 activityEntities.add(creatorActivity);
             }
 
@@ -44,7 +44,7 @@ public class EventHelper {
                 for (final JsonNode assigneeNode : assigneesNode) {
                     String assigneeId = assigneeNode.get(ActivityFields.ASSIGNEE_ID.value()).asText();
                     log.debug("Activity has assignee {}", assigneeId);
-                    ActivityEntity assigneeActivity = buildActivityEntity(assigneeId, title, activityId, payload);
+                    ActivityNotificationEntity assigneeActivity = buildActivityEntity(assigneeId, title, activityId, payload);
                     activityEntities.add(assigneeActivity);
                 }
             }
@@ -56,8 +56,8 @@ public class EventHelper {
         return activityEntities;
     }
 
-    private ActivityEntity buildActivityEntity(String userId, String title, String entityId, String payload) {
-        return ActivityEntity.builder()
+    private ActivityNotificationEntity buildActivityEntity(String userId, String title, String entityId, String payload) {
+        return ActivityNotificationEntity.builder()
                 .userId(userId)
                 .title(title)
                 .entityId(entityId)

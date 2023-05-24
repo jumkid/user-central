@@ -1,25 +1,25 @@
 package com.jumkid.usercentral.service;
 
-import com.jumkid.usercentral.controller.dto.Activity;
+import com.jumkid.usercentral.controller.dto.ActivityNotification;
 import com.jumkid.usercentral.exception.DataNotFoundException;
-import com.jumkid.usercentral.model.ActivityEntity;
+import com.jumkid.usercentral.model.ActivityNotificationEntity;
 
 import java.util.List;
 
 public interface UserService {
 
-    Activity getUserActivity(Long id) throws DataNotFoundException;
+    ActivityNotification getActivityNotification(Long id) throws DataNotFoundException;
 
-    List<Activity> getActivities();
+    List<ActivityNotification> getActivityNotificationsForCurrentUser();
 
-    Activity save(ActivityEntity entity);
+    ActivityNotification save(ActivityNotificationEntity entity);
 
-    List<ActivityEntity> saveAll(List<ActivityEntity> activityEntities);
+    List<ActivityNotificationEntity> saveAll(List<ActivityNotificationEntity> entities);
 
-    Integer setActivityUnread(Long id, boolean unread);
+    Integer setActivityNotificationUnread(Long id, boolean unread);
 
-    Integer deleteUserActivity(Long id);
+    Integer deleteActivityNotification(Long id);
 
-    Integer deleteAll(List<ActivityEntity> activityEntities);
+    Integer deleteAll(List<ActivityNotificationEntity> entities);
 
 }

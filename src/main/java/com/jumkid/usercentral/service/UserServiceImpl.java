@@ -2,11 +2,11 @@ package com.jumkid.usercentral.service;
 
 import com.jumkid.share.user.UserProfile;
 import com.jumkid.share.user.UserProfileManager;
-import com.jumkid.usercentral.controller.dto.Activity;
+import com.jumkid.usercentral.controller.dto.ActivityNotification;
 import com.jumkid.usercentral.exception.DataNotFoundException;
-import com.jumkid.usercentral.model.ActivityEntity;
-import com.jumkid.usercentral.model.mapper.ActivityMapper;
-import com.jumkid.usercentral.repository.ActivityRepository;
+import com.jumkid.usercentral.model.ActivityNotificationEntity;
+import com.jumkid.usercentral.model.mapper.ActivityNotificationMapper;
+import com.jumkid.usercentral.repository.ActivityNotificationRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,61 +18,62 @@ import java.util.List;
 @Slf4j
 public class UserServiceImpl implements UserService{
 
-    private final ActivityRepository activityRepository;
+    private final ActivityNotificationRepository activityNotificationRepository;
 
     private final UserProfileManager userProfileManager;
 
-    private final ActivityMapper activityMapper;
+    private final ActivityNotificationMapper activityNotificationMapper;
 
     @Autowired
-    public UserServiceImpl(ActivityRepository activityRepository,
+    public UserServiceImpl(ActivityNotificationRepository activityNotificationRepository,
                            UserProfileManager userProfileManager,
-                           ActivityMapper activityMapper) {
-        this.activityRepository = activityRepository;
+                           ActivityNotificationMapper activityNotificationMapper) {
+        this.activityNotificationRepository = activityNotificationRepository;
         this.userProfileManager = userProfileManager;
-        this.activityMapper = activityMapper;
+        this.activityNotificationMapper = activityNotificationMapper;
     }
 
     @Override
-    public Activity getUserActivity(Long id) throws DataNotFoundException{
-        ActivityEntity entity = activityRepository.findByIdAndUserId(id, getCurrentUserId())
+    public ActivityNotification getActivityNotification(Long id) throws DataNotFoundException{
+        ActivityNotificationEntity entity = activityNotificationRepository.findByIdAndUserId(id, getCurrentUserId())
                 .orElseThrow(() -> new DataNotFoundException(String.valueOf(id)));
-        return activityMapper.entityToDTO(entity);
+        return activityNotificationMapper.entityToDTO(entity);
     }
 
     @Override
-    public List<Activity> getActivities() {
-        List<ActivityEntity> userActivityEntities = activityRepository.findByUserIdAndUnread(getCurrentUserId(), true);
+    public List<ActivityNotification> getActivityNotificationsForCurrentUser() {
+        List<ActivityNotificationEntity> userActivityEntities = activityNotificationRepository.findByUserId(getCurrentUserId());
         log.debug("Found total {} activities for current user", userActivityEntities.size());
 
-        return activityMapper.entitiesToDTOs(userActivityEntities);
+        return activityNotificationMapper.entitiesToDTOs(userActivityEntities);
     }
 
     @Override
-    public Activity save(ActivityEntity entity) {
-        entity = activityRepository.save(entity);
-        return activityMapper.entityToDTO(entity);
-    }
-
-    @Override
-    public List<ActivityEntity> saveAll(List<ActivityEntity> activityEntities) {
-        return activityRepository.saveAll(activityEntities);
+    public ActivityNotification save(ActivityNotificationEntity entity) {
+        entity = activityNotificationRepository.save(entity);
+        return activityNotificationMapper.entityToDTO(entity);
     }
 
     @Override
     @Transactional
-    public Integer setActivityUnread(Long id, boolean unread) {
+    public List<ActivityNotificationEntity> saveAll(List<ActivityNotificationEntity> activityEntities) {
+        return activityNotificationRepository.saveAll(activityEntities);
+    }
+
+    @Override
+    @Transactional
+    public Integer setActivityNotificationUnread(Long id, boolean unread) {
         try {
-            return activityRepository.updateUnread(unread, id, getCurrentUserId());
+            return activityNotificationRepository.updateUnread(unread, id, getCurrentUserId());
         } catch (Exception e) {
             return 0;
         }
     }
 
     @Override
-    public Integer deleteUserActivity(Long id) {
+    public Integer deleteActivityNotification(Long id) {
         try {
-            activityRepository.deleteById(String.valueOf(id));
+            activityNotificationRepository.deleteById(String.valueOf(id));
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -82,14 +83,14 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Integer deleteAll(List<ActivityEntity> activityEntities) {
+    public Integer deleteAll(List<ActivityNotificationEntity> activityEntities) {
         int count = 0;
         try {
-            for (ActivityEntity activityEntity : activityEntities) {
-                String userId = activityEntity.getUserId();
-                String entityId = activityEntity.getEntityId();
-                String entityModule = activityEntity.getEntityModule();
-                count += activityRepository.deleteByUserIdAndEntityIdAndEntityModule(userId, entityId, entityModule);
+            for (ActivityNotificationEntity activityNotificationEntity : activityEntities) {
+                String userId = activityNotificationEntity.getUserId();
+                String entityId = activityNotificationEntity.getEntityId();
+                String entityModule = activityNotificationEntity.getEntityModule();
+                count += activityNotificationRepository.deleteByUserIdAndEntityIdAndEntityModule(userId, entityId, entityModule);
                 log.trace("Deleted {} activity with userId:{}, entityId:{} entityModule:{}",
                         count, userId, entityId, entityModule);
             }

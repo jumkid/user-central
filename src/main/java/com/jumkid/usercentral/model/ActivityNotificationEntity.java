@@ -4,14 +4,14 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "activity")
+@Table(name = "activity_notification")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(of = {"userId", "entityId", "entityModule"})
-public class ActivityEntity {
+public class ActivityNotificationEntity {
 
     @Id
     @Column(name = "id")

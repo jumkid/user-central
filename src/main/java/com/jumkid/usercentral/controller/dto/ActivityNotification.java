@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 @Builder
 @Data
 @EqualsAndHashCode(of = {"id"})
-public class Activity{
+public class ActivityNotification {
 
     @Min(0L)
     private Long id;
