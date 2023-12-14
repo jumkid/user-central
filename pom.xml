@@ -5,24 +5,27 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.6</version>
+        <version>3.2.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.jumid</groupId>
     <artifactId>user-central</artifactId>
-    <version>0.9.1</version>
+    <version>0.9.2</version>
     <name>user-central</name>
     <description>Customer user service</description>
 
     <properties>
-        <java.version>17</java.version>
-        <org.projectlombok.version>1.18.26</org.projectlombok.version>
+        <java.version>20</java.version>
+        <org.projectlombok.version>1.18.30</org.projectlombok.version>
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
         <jaxb.version>2.3.0</jaxb.version>
 
         <flyway.version>9.17.0</flyway.version>
         <mysql.connector.version>8.0.33</mysql.connector.version>
         <h2.db.version>2.1.214</h2.db.version>
+
+        <junit.jupiter.version>5.10.1</junit.jupiter.version>
+        <junit.platform.version>1.10.1</junit.platform.version>
 
         <!-- jumkid modules -->
         <sharejar.version>1.0.1</sharejar.version>
@@ -106,13 +109,27 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.jupiter.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite</artifactId>
+            <version>${junit.platform.version}</version>
             <scope>test</scope>
         </dependency>
 
