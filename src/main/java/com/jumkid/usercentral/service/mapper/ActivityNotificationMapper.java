@@ -1,4 +1,4 @@
-package com.jumkid.usercentral.model.mapper;
+package com.jumkid.usercentral.service.mapper;
 
 import com.jumkid.usercentral.controller.dto.ActivityNotification;
 import com.jumkid.usercentral.model.ActivityNotificationEntity;
