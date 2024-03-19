@@ -2,8 +2,8 @@ package com.jumkid.usercentral;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import io.restassured.parsing.Parser;
 import org.junit.jupiter.api.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,7 +11,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.kafka.test.context.EmbeddedKafka;
-import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.Matchers.*;
 
@@ -26,14 +25,12 @@ class ActivityNotificationAPITests {
 	@LocalServerPort
 	private int port;
 
-	@Autowired
-	private WebApplicationContext webApplicationContext;
 	@Value("${com.jumkid.jwt.test.user-token}")
 	private String testUserToken;
 
 	@BeforeAll
 	void setup() {
-		//void
+		RestAssured.defaultParser = Parser.JSON;
 	}
 
 	@Test
